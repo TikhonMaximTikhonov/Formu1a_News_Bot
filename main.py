@@ -1,16 +1,38 @@
-# This is a sample Python script.
+import telebot
+from os import environ
+from database import DataBase
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+bot = telebot.TeleBot(environ.get("token"))
 
 
-# Press the green button in the gutter to run the script.
+def create_markup(main_buttons_data):
+    markup = telebot.types.ReplyKeyboardMarkup(True)
+    for button_data in main_buttons_data:
+        markup.row(telebot.types.KeyboardButton(button_data))
+    return markup
+
+
+@bot.message_handler(content_types=["text"],
+                     func=lambda message: message.text == "Подписаться")
+@bot.message_handler(commands=["start"])
+def on(message):
+    if data_base.create_user(message.from_user.id) is False:
+        data_base.subscribe(message.from_user.id)
+    print(f"{message.from_user.id}: Подписался на рассылку")
+    bot.send_message(message.from_user.id, "Вы успешно подписались на новости",
+                     reply_markup=create_markup(["Отписаться"]))
+
+
+@bot.message_handler(content_types=["text"],
+                     func=lambda message: message.text == "Отписаться")
+def off(message):
+    data_base.unsubscribe(message.from_user.id)
+    print(f"{message.from_user.id}: Отписался от рассылки")
+    bot.send_message(message.from_user.id, "Вы успешно отписались от новостей",
+                     reply_markup=create_markup(["Подписаться"]))
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    data_base = DataBase("database.db")
+    print("Start")
+    bot.polling()
