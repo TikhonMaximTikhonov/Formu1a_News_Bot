@@ -2,7 +2,7 @@ import telebot
 from os import environ
 from database import DataBase
 
-bot = telebot.TeleBot(environ.get("token"))
+bot = telebot.TeleBot(environ.get("TOKEN"))
 
 
 def create_markup(main_buttons_data):

@@ -8,7 +8,7 @@ import requests
 
 from database import DataBase
 
-bot = telebot.TeleBot(environ.get("token"))
+bot = telebot.TeleBot(environ.get("TOKEN"))
 
 
 def timer():
