@@ -20,7 +20,6 @@ def create_markup(main_buttons_data):
 def on(message):
     if data_base.create_user(message.from_user.id) is False:
         data_base.subscribe(message.from_user.id)
-    print(f"{message.from_user.id}: Подписался на рассылку")
     bot.send_message(message.from_user.id, "Вы успешно подписались на новости",
                      reply_markup=create_markup(["Отписаться"]))
 
@@ -29,12 +28,10 @@ def on(message):
                      func=lambda message: message.text == "Отписаться")
 def off(message):
     data_base.unsubscribe(message.from_user.id)
-    print(f"{message.from_user.id}: Отписался от рассылки")
     bot.send_message(message.from_user.id, "Вы успешно отписались от новостей",
                      reply_markup=create_markup(["Подписаться"]))
 
 
 if __name__ == '__main__':
     data_base = DataBase("database.db")
-    print("Start")
     bot.polling()
