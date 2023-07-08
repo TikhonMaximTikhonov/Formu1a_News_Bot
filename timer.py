@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import telebot
 from time import sleep
 from datetime import datetime

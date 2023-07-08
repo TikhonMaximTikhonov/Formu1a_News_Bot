@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import telebot
 from os import environ
 from database import DataBase

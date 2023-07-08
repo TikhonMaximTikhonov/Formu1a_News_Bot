@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import sqlalchemy.ext.declarative as dec
 import sqlalchemy.orm as orm
 import sqlalchemy
